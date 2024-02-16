@@ -69,7 +69,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
   console.log(req.params.id);
   try {
     const results = await db.query(
-      "UPDATE restaurants SET name = $1, location = $2, price_range = $3 where id = $4 returning ",
+      "UPDATE restaurants SET name = $1, location = $2, price_range = $3 where id = $4 returning *",
       [req.body.name, req.body.location, req.body.price_range, req.params.id]
     );
     console.log(results);
@@ -77,7 +77,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
     res.status(200).json({
       status: "success",
       data: {
-        restaurant: "mcdonalds",
+        restaurant: results.rows[0],
       },
     });
   } catch (err) {
@@ -89,10 +89,17 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
 
 //Delete Restaurant
 
-app.delete("/api/v1/restaurants/:id", (res, req) => {
-  res.status(204).json({
-    status: "success",
-  });
+app.delete("/api/v1/restaurants/:id", async (res, req) => {
+  try{
+    const results = db.query("DELETE FROM restaurants where id = $1", [req.params.id,]);
+    res.status(204).json({
+      status: "success",
+    });
+  }
+  catch(err){
+    console.log(err)
+  }
+
 });
 
 const port = process.env.PORT || 3001;
