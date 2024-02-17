@@ -87,18 +87,17 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
 });
 
 //Delete Restaurant
-
-app.delete("/api/v1/restaurants/:id", async (res, req) => {
-  try{
-    const results = db.query("DELETE FROM restaurants where id = $1", [req.params.id,]);
+app.delete("/api/v1/restaurants/:id", async (req, res) => {
+  try {
+    const results = await db.query("DELETE FROM restaurants where id = $1", [
+      req.params.id,
+    ]);
     res.status(204).json({
-      status: "success",
+      status: "sucess",
     });
+  } catch (err) {
+    console.log(err);
   }
-  catch(err){
-    console.log(err)
-  }
-
 });
 
 const port = process.env.PORT || 3001;
