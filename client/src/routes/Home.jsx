@@ -8,7 +8,7 @@ function Home() {
     <div className='container'>
       <Header/>
       <AddRestaurant/>
-      <RestaurantList/>
+      <RestaurantList />
     </div>
   )
 }
